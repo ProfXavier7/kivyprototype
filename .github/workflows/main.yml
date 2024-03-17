@@ -1,0 +1,26 @@
+name: Build Kivy APK
+
+on:
+  push:
+    branches: [ main ]  # You can customize the branch to trigger the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Or specify your preferred runner environment
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install python3-pip
+          pip3 install buildozer
+      - name: Build APK
+        run: |
+          buildozer android debug
+      - name: Upload APK (optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-debug.apk
+          path: bins/android/  # Modify the path if your APK location differs
+
